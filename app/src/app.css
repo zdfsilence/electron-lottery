@@ -1,0 +1,55 @@
+body{
+    overflow: hidden;
+}
+.main{
+    width:3040px;
+    height:976px;
+    background: #eee url(./img/screen.jpg) no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.head{
+    position:absolute;
+    right:20px;
+    top:20px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+
+}
+.head p{
+    position: relative;
+    width:60px;
+    height:60px;
+    background:transparent;
+    border:none;
+    font-size:40px;
+    color：#eee;
+    margin:0;
+    text-align: center;
+    vertical-align: middle;
+}
+.icon-close::before, .icon-close::after{
+	content:'';
+	position: absolute;
+	width:3px;
+	height:23px;
+	background: #fff;
+    top:23px;
+    left:27px;
+}
+.icon-close::before{
+	transform: rotate(45deg);
+}
+.icon-close::after{
+	transform: rotate(-45deg);
+}
+.icon-full::before{
+    content:'';
+    position: absolute;
+    width:16px;
+    height:16px;
+    border:3px solid #fff;
+    top:23px;
+    left:17px;
+}

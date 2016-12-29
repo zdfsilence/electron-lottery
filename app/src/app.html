@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>旅游春晚</title>
+    <link rel="stylesheet" href="./common/normalize.css" charset="utf-8">
+    <link rel="stylesheet" href="./app.css" charset="utf-8">
+</head>
+
+<body>
+    <div id="app">
+        <div class="main" v-el:lottery>
+
+        </div>
+        <header class="head">
+            <p class="icon-close" @click="close"></p>
+            <p class="icon-full" @click="full"></p>
+        </header>
+    </div>
+
+</body>
+
+<script>
+    // You can also require other files to run in this process
+    require('./app.js')
+</script>
+
+</html>
