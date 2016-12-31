@@ -11,12 +11,43 @@
 <body>
     <div id="app">
         <div class="main" ref="lottery">
+            <dl class="awards">
+            <template v-for="item in info.config">
+                <dt>{{item.name}}</dt>
+                <dd v-for="item in item.list" :class="{'big':item.type.replace(/ /g,'')!='奖品'}">
+                    <i></i>{{item.type}}<i></i>
+                </dd>
+            </template>
+            </dl>
+            <div class="machine">
+                <div class="machine-front">
 
+                </div>
+                <div class="machine-start" @click="start"></div>
+                <div class="machine-end" @click="end"></div>
+            </div>
+            <div class="winner">
+                <p class="award-name">小红狗玩偶</p>
+                <img class="award-img" src="./img/奖品/小红狗玩偶.jpg" />
+                <p class="award-name award-title">中奖号码</p>
+                <ul class="winner-list">
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                    <li>1000</li>
+                </ul>
+            </div>
+            <img class="bottom" src="./img/bottom.png"/>
         </div>
         <header class="head">
             <p class="icon-close clickable" @click="close"></p>
             <p class="icon-full clickable" @click="full"></p>
-            <p class="clickable" @click="saveWinner">+</p>
         </header>
     </div>
 

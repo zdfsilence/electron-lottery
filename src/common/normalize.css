@@ -11,7 +11,7 @@
    ========================================================================== */
 
 html {
-  font-family: sans-serif; /* 1 */
+  font-family: '微软雅黑','sans-serif'; /* 1 */
   line-height: 1.15; /* 2 */
   -ms-text-size-adjust: 100%; /* 3 */
   -webkit-text-size-adjust: 100%; /* 3 */
@@ -24,7 +24,10 @@ html {
  * Remove the margin in all browsers (opinionated).
  */
 
-body {
+body,
+div,
+p,
+ul {
   margin: 0;
 }
 
@@ -458,4 +461,10 @@ template {
 
 [hidden] {
   display: none;
+}
+
+ul,
+li {
+    padding:0;
+    list-style-type: none;
 }

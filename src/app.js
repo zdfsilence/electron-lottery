@@ -8,16 +8,47 @@ const fs = require('fs')
 const Vue = require('./common/vue.js')
 const WinnerFilePath = path.resolve(__dirname + '/../winner.txt')
 const win = remote.getCurrentWindow()
+const {
+    readWinnerStorage,
+    writeWinnerFile,
+    analyzeRecord,
+    sumWinners,
+    getPlayer,
+    getTurn
+} = require('./data.js')
+Date.prototype.format = function(fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 
-let list = require('../config.json')
-
-let page = new Vue({
+window.page = new Vue({
     el: '#app',
     data: {
-        isFullScreen: false
+        isFullScreen: false,
+        info: require('../config.json'),
+        config: null,
+        winnerRecord: null,
+        // players: [],
+        winners: [],
+        current: null
     },
-    created: function() {
-        this.createWinner(WinnerFilePath)
+    created() {
+        this.winnerRecord = readWinnerStorage() || []
+        this.winners = sumWinners(this.winnerRecord)
+        this.config = analyzeRecord(this.info.config, this.winnerRecord)
+            // this.players = getPlayer(this.config.player, this.winners)
+        this.current = getTurn(this.config)
     },
     methods: {
         close() {
@@ -45,28 +76,11 @@ let page = new Vue({
                 el.style.transformOrigin = 'inital'
             }
         },
-        createWinner() {
-            let filePath = WinnerFilePath
-            fs.exists(filePath, function(isExist) {
-                    if (!isExist) {
-                        fs.writeFile(filePath, '', {
-                            flag: 'a',
-                            encoding: 'utf8'
-                        }, function(err) {
-                            if (err) {
-                                alert(err)
-                            } else {
-                                console.log('中奖名单创建成功')
-                            }
-                        })
-                    }
-                })
+        start() {
+
         },
-        saveWinner() {
-            let filePath = WinnerFilePath
-            fs.appendFile(filePath, '\r\n使用fs.appendFile追加文件内容', function() {
-                console.log('追加内容完成');
-            })
+        end() {
+
         }
     }
 })

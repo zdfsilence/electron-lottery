@@ -1,60 +1,69 @@
-[
-    [{
-        "name": "小红狗玩偶",
-        "type": "奖品",
-        "number": 20,
-        "unit": "个"
+{
+    "key": "1",
+    "config": [{
+        "name": "第一轮",
+        "list": [{
+            "name": "小红狗玩偶",
+            "type": "奖 品",
+            "number": 20,
+            "unit": "个"
+        }, {
+            "name": "桌面宝",
+            "type": "奖 品",
+            "number": 5,
+            "unit": "个"
+        }, {
+            "name": "盼盼生榨椰子汁",
+            "type": "奖 品",
+            "number": 3,
+            "unit": "箱"
+        }, {
+            "name": "翠佛堂吊坠",
+            "type": "神秘大奖",
+            "number": 2,
+            "unit": "个"
+        }]
     }, {
-        "name": "桌面宝",
-        "type": "奖品",
-        "number": 5,
-        "unit": "个"
+        "name": "第二轮",
+        "list": [{
+            "name": "小红狗玩偶",
+            "type": "奖 品",
+            "number": 20,
+            "unit": "个"
+        }, {
+            "name": "盼盼生榨椰子汁",
+            "type": "奖 品",
+            "number": 3,
+            "unit": "箱"
+        }, {
+            "name": "D-9真空吸尘器",
+            "type": "神秘大奖",
+            "number": 1,
+            "unit": "个"
+        }, {
+            "name": "翠佛堂吊坠",
+            "type": "神秘大奖",
+            "number": 2,
+            "unit": "个"
+        }]
     }, {
-        "name": "盼盼生榨椰子汁",
-        "type": "奖品",
-        "number": 3,
-        "unit": "箱"
-    }, {
-        "name": "翠佛堂吊坠",
-        "type": "神秘大奖",
-        "number": 2,
-        "unit": "个"
+        "name": "第三轮",
+        "list": [{
+            "name": "小红狗玩偶",
+            "type": "奖 品",
+            "number": 20,
+            "unit": "个"
+        }, {
+            "name": "V-M900R扫地机器人",
+            "type": "神秘大奖",
+            "number": 1,
+            "unit": "个"
+        }, {
+            "name": "翠佛堂吊坠",
+            "type": "神秘大奖",
+            "number": 2,
+            "unit": "个"
+        }]
     }],
-    [{
-        "name": "小红狗玩偶",
-        "type": "奖品",
-        "number": 20,
-        "unit": "个"
-    }, {
-        "name": "盼盼生榨椰子汁",
-        "type": "奖品",
-        "number": 3,
-        "unit": "箱"
-    }, {
-        "name": "D-9真空吸尘器",
-        "type": "神秘大奖",
-        "number": 1,
-        "unit": "个"
-    }, {
-        "name": "翠佛堂吊坠",
-        "type": "神秘大奖",
-        "number": 2,
-        "unit": "个"
-    }],
-    [{
-        "name": "小红狗玩偶",
-        "type": "奖品",
-        "number": 20,
-        "unit": "个"
-    }, {
-        "name": "V-M900R扫地机器人",
-        "type": "神秘大奖",
-        "number": 1,
-        "unit": "个"
-    }, {
-        "name": "翠佛堂吊坠",
-        "type": "神秘大奖",
-        "number": 2,
-        "unit": "个"
-    }]
-]
+    "player": 2000
+}
