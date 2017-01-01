@@ -4,9 +4,8 @@ const {
 } = require('electron')
     // const storage = require('electron-storage')
 const path = require('path')
-const fs = require('fs')
 const Vue = require('./common/vue.js')
-const WinnerFilePath = path.resolve(__dirname + '/../winner.txt')
+// const WinnerFilePath = path.resolve(__dirname + '/../winner.txt')
 const win = remote.getCurrentWindow()
 const {
     readWinnerStorage,
@@ -14,7 +13,11 @@ const {
     analyzeRecord,
     sumWinners,
     getPlayer,
-    getTurn
+    getNextTurn,
+    getCurrentTurn,
+    getWinnerList,
+    getRandomWinner,
+    writeWinnerStorage
 } = require('./data.js')
 Date.prototype.format = function(fmt) { //author: meizz
     var o = {
@@ -31,24 +34,48 @@ Date.prototype.format = function(fmt) { //author: meizz
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
-
 window.page = new Vue({
     el: '#app',
     data: {
         isFullScreen: false,
         info: require('../config.json'),
-        config: null,
-        winnerRecord: null,
+        currentAward: null,
+        currentRecord: null,
+        turn: undefined,
+        idx: undefined,
+        // config: null,
+        winnerRecord: [],
         // players: [],
-        winners: [],
-        current: null
+        // winners: [],
+        // current: null
+    },
+    computed: {
+        winners() {
+            return sumWinners(this.winnerRecord)
+        },
+        config() {
+            return analyzeRecord(this.info.config, this.winnerRecord)
+        },
+        winnerList() {
+            return getWinnerList(this.turn, this.idx, this.winnerRecord)
+        }
     },
     created() {
-        this.winnerRecord = readWinnerStorage() || []
-        this.winners = sumWinners(this.winnerRecord)
-        this.config = analyzeRecord(this.info.config, this.winnerRecord)
-            // this.players = getPlayer(this.config.player, this.winners)
-        this.current = getTurn(this.config)
+        this.winnerRecord = readWinnerStorage(this.info.key)
+        this.$watch('winnerRecord', function(val, oldVal) {
+            writeWinnerStorage(this.info.key, val)
+            writeWinnerFile(path.resolve(__dirname + '/../winner_'+this.info.key+'.txt'), val, oldVal)
+        }, {
+            deep: true
+        })
+    },
+    watch: {
+        // winnerRecord: {
+        //     handler: function(val, oldVal) {
+        //         writeWinnerStorage(this.key, val)
+        //     },
+        //     deep: true
+        // }
     },
     methods: {
         close() {
@@ -76,11 +103,33 @@ window.page = new Vue({
                 el.style.transformOrigin = 'inital'
             }
         },
+        open(turn, idx) {
+            this.turn = turn
+            this.idx = idx
+            this.info.config[turn].list[idx].open = 1
+            this.currentAward = this.config[turn].list[idx]
+        },
         start() {
 
         },
         end() {
-
+            let total = this.currentAward.number - (this.currentAward.winner ? this.currentAward.winner.length : 0),
+                num = total > 10 ? 10 : total,
+                time = new Date().format('yyyy-MM-dd hh:mm:ss')
+            for (var i = 0; i < num; i++) {
+                this.winnerRecord.push({
+                    turn: this.turn,
+                    idx: this.idx,
+                    award: this.currentAward.name,
+                    time: time,
+                    winner: getRandomWinner(this.info.player, this.winners)
+                })
+            }
+        }
+    },
+    filters: {
+        preFix: function(value) {
+            return (Array(4).join('0') + value).slice(-4)
         }
     }
 })

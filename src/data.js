@@ -1,34 +1,58 @@
+const fs = require('fs')
+
 exports.readWinnerStorage = function(key) {
     let storage = localStorage.getItem('key_' + key)
-
     return !storage ? [] : JSON.parse(storage)
 }
-exports.writeWinnerFile = function(filePath, data) {
-
-    fs.exists(filePath, function(isExist) {
-        if (!isExist) {
-            fs.writeFile(filePath, JSON.stringify(data), {
-                flag: 'a',
-                encoding: 'utf8'
-            }, function(err) {
-                if (err) {
-                    alert(err)
-                } else {
-                    console.log('中奖名单创建成功')
-                }
-            })
+exports.writeWinnerStorage = function(key, data) {
+    localStorage.setItem('key_' + key, JSON.stringify(data))
+}
+exports.writeWinnerFile = function(filePath, data, odata) {
+    //let addData = data.slice(odata.length)
+    // fs.writeFile(filePath, '', {
+    //     flag: 'w',
+    //     encoding: 'utf8'
+    // }, function(err) {
+    //     if (err) {
+    //         console.log('清空失败')
+    //     } else {
+    //         console.log('清空成功')
+    //     }
+    // })
+    fs.writeFile(filePath, JSON.stringify(data).replace(/\}\,\{/g, '},\r{'), {
+        flag: 'w',
+        encoding: 'utf8'
+    }, function(err) {
+        if (err) {
+            console.log('保存失败')
         } else {
-            fs.appendFile(filePath, '\r\n使用fs.appendFile追加文件内容', function() {
-                console.log('追加内容完成');
-            })
+            console.log('保存成功')
         }
     })
+    // fs.exists(filePath, function(isExist) {
+    //     if (!isExist) {
+    //         fs.writeFile(filePath, JSON.stringify(data), {
+    //             flag: 'a',
+    //             encoding: 'utf8'
+    //         }, function(err) {
+    //             if (err) {
+    //                 alert(err)
+    //             } else {
+    //                 console.log('中奖名单创建成功')
+    //             }
+    //         })
+    //     } else {
+    //         fs.writeFile(filePath, '\r\n使用fs.appendFile追加文件内容', function() {
+    //             console.log('追加内容完成');
+    //         })
+    //     }
+    // })
 }
 exports.analyzeRecord = function(config, record) {
     return config.map((turn, i) => {
         turn.list = turn.list.map((idx, j) => {
             let rec = record.filter((e) => {
-                if (e.turn == turn.name && e.idx == j) {
+                if (e.turn == i && e.idx == j) {
                     return true
                 } else {
                     return false
@@ -36,11 +60,10 @@ exports.analyzeRecord = function(config, record) {
             })
 
             if (rec.length > 0) {
-                idx.winner = rec.reduce((r, e) => {
-                    return Array.prototype.concat.apply(r, e.winner)
-                }, [])
-            } else {
-                idx.winner = []
+                idx.winner = rec.map((e) => {
+                    return e.winner
+                })
+
             }
             return idx
         })
@@ -48,32 +71,76 @@ exports.analyzeRecord = function(config, record) {
     })
 }
 exports.sumWinners = function(record) {
-    return record.reduce((r, e) => {
-        return Array.prototype.concat.apply(r, e.winner)
-    }, [])
+    return record.map((e) => {
+        return e.winner
+    })
 }
-exports.getTurn = function(config) {
+exports.getNextTurn = function(config) {
     let turn,
-        idx
-    config.every((e, i)=>{
+        idx,
+        status
+    config.every((e, i) => {
         turn = i
-        e.list.every((d, j)=>{
-            if(d.number > d.winner.length){
+        e.list.every((d, j) => {
+            if (!d.winner || d.number > d.winner.length) {
                 idx = j
+                status = (d.winner && d.winner.length >= 0) ? 'open' : 'close'
                 return false
             }
             return true
         })
-        if(idx !== undefined) return false
+        if (idx !== undefined) return false
         return true
     })
     return {
         turn,
-        idx
+        idx,
+        status
     }
 }
-// exports.getPlayer = function(players, winners) {
-//     for (let i = 1, tmp; i <= players; i++) {
-//         if(winners)
-//     }
-// }
+exports.getCurrentTurn = function(config) {
+    let turn,
+        idx,
+        status
+    config.every((e, i) => {
+        turn = i
+        e.list.every((d, j) => {
+            if (!d.winner || d.number > d.winner.length) {
+                idx = j
+                status = (d.winner && d.winner.length >= 0) ? 'open' : 'close'
+                return false
+            }
+            return true
+        })
+        if (idx !== undefined) return false
+        return true
+    })
+    return {
+        turn,
+        idx,
+        status
+    }
+}
+exports.getWinnerList = function(turn, idx, winnerRecord) {
+    let list, time
+    if (turn == undefined || idx == undefined) return []
+    list = winnerRecord.filter((e) => {
+        return e.turn == turn && e.idx == idx
+    })
+    if (list.length > 10) {
+        time = list[list.length - 1].time
+        return list.filter((e) => {
+            return e.time == time
+        })
+    } else {
+        return list
+    }
+}
+exports.getRandomWinner = function(number, blackList) {
+    let num
+    while (num === undefined) {
+        num = parseInt(Math.random() * number) + 1
+        if (blackList.indexOf(num) > -1) num = undefined
+    }
+    return num
+}

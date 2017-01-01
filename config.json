@@ -5,22 +5,26 @@
         "list": [{
             "name": "小红狗玩偶",
             "type": "奖 品",
+            "level": 1,
             "number": 20,
             "unit": "个"
         }, {
             "name": "桌面宝",
             "type": "奖 品",
+            "level": 1,
             "number": 5,
             "unit": "个"
         }, {
             "name": "盼盼生榨椰子汁",
             "type": "奖 品",
+            "level": 1,
             "number": 3,
             "unit": "箱"
         }, {
             "name": "翠佛堂吊坠",
             "type": "神秘大奖",
-            "number": 2,
+            "level": 2,
+            "number": 1,
             "unit": "个"
         }]
     }, {
@@ -28,21 +32,25 @@
         "list": [{
             "name": "小红狗玩偶",
             "type": "奖 品",
+            "level": 1,
             "number": 20,
             "unit": "个"
         }, {
             "name": "盼盼生榨椰子汁",
             "type": "奖 品",
+            "level": 1,
             "number": 3,
             "unit": "箱"
         }, {
             "name": "D-9真空吸尘器",
             "type": "神秘大奖",
+            "level": 2,
             "number": 1,
             "unit": "个"
         }, {
             "name": "翠佛堂吊坠",
             "type": "神秘大奖",
+            "level": 2,
             "number": 2,
             "unit": "个"
         }]
@@ -51,17 +59,20 @@
         "list": [{
             "name": "小红狗玩偶",
             "type": "奖 品",
+            "level": 1,
             "number": 20,
             "unit": "个"
         }, {
             "name": "V-M900R扫地机器人",
             "type": "神秘大奖",
+            "level": 2,
             "number": 1,
             "unit": "个"
         }, {
             "name": "翠佛堂吊坠",
             "type": "神秘大奖",
-            "number": 2,
+            "level": 2,
+            "number": 3,
             "unit": "个"
         }]
     }],
