@@ -37,9 +37,13 @@
                 </template>
             </dl>
             <div class="machine">
-                <div class="machine-front">
-
-                </div>
+                <img hidden src="./img/1.png" id="img1">
+                <img hidden src="./img/2.png" id="img2">
+                <img hidden src="./img/3.png" id="img3">
+                <img hidden src="./img/4.png" id="img4">
+                <img hidden src="./img/5.png" id="img5">
+                <canvas class="machine-ani" id="cvs" width="500" height="280"></canvas>
+                <div class="machine-front"></div>
                 <div class="machine-start" @click="start"></div>
                 <div class="machine-end" @click="end"></div>
             </div>

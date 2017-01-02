@@ -1,5 +1,5 @@
 const fs = require('fs')
-
+const iconv = require('iconv-lite')
 exports.readWinnerStorage = function(key) {
     let storage = localStorage.getItem('key_' + key)
     return !storage ? [] : JSON.parse(storage)
@@ -7,7 +7,7 @@ exports.readWinnerStorage = function(key) {
 exports.writeWinnerStorage = function(key, data) {
     localStorage.setItem('key_' + key, JSON.stringify(data))
 }
-exports.writeWinnerFile = function(filePath, data, odata) {
+exports.writeWinnerFile = function(filePath, data) {
     //let addData = data.slice(odata.length)
     // fs.writeFile(filePath, '', {
     //     flag: 'w',
@@ -19,9 +19,14 @@ exports.writeWinnerFile = function(filePath, data, odata) {
     //         console.log('清空成功')
     //     }
     // })
-    fs.writeFile(filePath, JSON.stringify(data).replace(/\}\,\{/g, '},\r{'), {
-        flag: 'w',
-        encoding: 'utf8'
+    let csv = data.reduce((r, e, i)=>{
+        r.push(i+1+','+e.turn+1+','+e.idx+1+','+e.award+','+e.winner+','+e.time)
+        return r
+    }, ['序号,轮次,顺序,奖品,中奖号码,抽奖时间']).join('\r')
+    csv = iconv.encode(csv,'gbk')
+    // fs.writeFile(filePath, JSON.stringify(data).replace(/\}\,\{/g, '},\r{'), {
+    fs.writeFile(filePath, csv, {
+        flag: 'w'
     }, function(err) {
         if (err) {
             console.log('保存失败')
