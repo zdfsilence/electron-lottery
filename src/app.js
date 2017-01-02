@@ -101,11 +101,11 @@ window.onload = function() {
                 let el = this.$refs.lottery
 
                 if (flag) {
-                    document.body.style.overflowX = 'hidden'
+                    document.body.style.overflow = 'hidden'
                     el.style.transform = 'scale(' + (window.screen.width / el.clientWidth) + ',' + (window.screen.height / el.clientHeight) + ')'
                     el.style.transformOrigin = 'left top'
                 } else {
-                    document.body.style.overflowX = 'auto'
+                    document.body.style.overflow = 'auto'
                     el.style.transform = 'scale(1)'
                     el.style.transformOrigin = 'inital'
                 }
@@ -117,12 +117,12 @@ window.onload = function() {
                 this.currentAward = this.config[turn].list[idx]
             },
             start() {
-                if(this.isRolling || (this.currentAward && this.currentAward.winner && this.currentAward.winner.length >= this.currentAward.number)) return
+                if(this.isRolling || !this.currentAward || (this.currentAward.winner && this.currentAward.winner.length >= this.currentAward.number)) return
                 this.isRolling = true
                 animate.start()
             },
             end() {
-                if(!this.isRolling || (this.currentAward && this.currentAward.winner && this.currentAward.winner.length >= this.currentAward.number)) return
+                if(!this.isRolling || !this.currentAward || (this.currentAward.winner && this.currentAward.winner.length >= this.currentAward.number)) return
                 animate.replaceBall()
                 this.isRolling = false
                 let total = this.currentAward.number - (this.currentAward.winner ? this.currentAward.winner.length : 0),

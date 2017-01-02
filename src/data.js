@@ -20,7 +20,7 @@ exports.writeWinnerFile = function(filePath, data) {
     //     }
     // })
     let csv = data.reduce((r, e, i)=>{
-        r.push(i+1+','+e.turn+1+','+e.idx+1+','+e.award+','+e.winner+','+e.time)
+        r.push((i+1)+','+(e.turn+1)+','+(e.idx+1)+','+e.award+','+e.winner+','+e.time)
         return r
     }, ['序号,轮次,顺序,奖品,中奖号码,抽奖时间']).join('\r')
     csv = iconv.encode(csv,'gbk')
