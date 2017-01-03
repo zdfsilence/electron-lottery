@@ -4,6 +4,7 @@ html {
 body {
     overflow-x: auto;
     overflow-y: auto;
+    -webkit-user-select: none;
     /*-webkit-app-region: drag;*/
 }
 /*body::-webkit-scrollbar {
@@ -67,7 +68,7 @@ body::-webkit-scrollbar-thumb {
     position:absolute;
     left:110px;
     top:80px;
-    z-index:2
+    z-index:4
 }
 .awards {
     position: absolute;
@@ -165,7 +166,7 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
     left: 0;
     bottom: 0;
-    z-index:4
+    pointer-events:none;
 }
 .clickable.clickable {
     /*-webkit-app-region: no-drag;*/
@@ -173,8 +174,8 @@ body::-webkit-scrollbar-thumb {
 .head {
     position: fixed;
     width: 100%;
-    /*height: 100px;*/
-    /*padding: 10px 20px 0 0;*/
+    /*height: 100px;
+    padding: 10px 20px 0 0;*/
     box-sizing: border-box;
     right: 0;
     top: 0;
