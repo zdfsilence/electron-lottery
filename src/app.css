@@ -49,14 +49,14 @@ body::-webkit-scrollbar-thumb {
     background: url(./img/machine.png) no-repeat;
     background-size: contain;
     background-position: center;
-    z-index:3
+    z-index:2
 }
 .machine-start, .machine-end {
     position: absolute;
     width: 160px;
     height: 40px;
     top: 372px;
-    z-index: 5;
+    z-index: 4;
 }
 .machine-start {
     left: 164px;
@@ -68,7 +68,7 @@ body::-webkit-scrollbar-thumb {
     position:absolute;
     left:110px;
     top:80px;
-    z-index:4
+    z-index:1
 }
 .awards {
     position: absolute;
@@ -167,6 +167,7 @@ body::-webkit-scrollbar-thumb {
     left: 0;
     bottom: 0;
     pointer-events:none;
+    z-index:3;
 }
 .clickable.clickable {
     /*-webkit-app-region: no-drag;*/
