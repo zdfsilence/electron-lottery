@@ -243,17 +243,29 @@ body::-webkit-scrollbar-thumb {
     top: 50%;
     margin: -350px 0 0 -600px;
     flex-direction: row;
-    align-items: center;
+    align-items: top;
     justify-content: center;
     background-color: #61332c;
     z-index: 5
 }
+.lottery-setting input,.lottery-setting select{
+    border:none;
+    outline: none;
+
+}
 .lottery-setting > div {
-    height: 600px;
-    /*overflow: auto;*/
-    /*border:1px solid #666;*/
-    /*border-radius: 20px;*/
-    padding: 10px;
+    position: relative;
+    padding: 10px 60px;
+}
+.lottery-setting > div:nth-child(n+3)::before {
+    content:'';
+    position:absolute;
+    border-radius: 2px;
+    width:3px;
+    height:90%;
+    left:0;
+    top:5%;
+    background:rgba(255,255,255,.3)
 }
 .lottery-players {
     text-align: center;
@@ -262,11 +274,14 @@ body::-webkit-scrollbar-thumb {
     display: block;
     max-height: 550px;
     overflow: auto;
-    background: #fff;
 }
 .lottery-players-table tr {
     border-top: 1px solid #999;
     border-left: 1px solid #999;
+    background: #fff;
+}
+.lottery-players-table tr:hover{
+    opacity: .85;
 }
 .lottery-players-table td, .lottery-players-table th {
     border-right: 1px solid #999;
@@ -312,4 +327,26 @@ body::-webkit-scrollbar-thumb {
     height: 60px;
     right:0;
     top:0;
+    z-index:1;
+}
+.lottery-setting h2{
+    color:#fff;
+}
+.lottery-config-idx{
+    width:35px;
+}
+.lottery-config-name{
+    width:150px;
+}
+.lottery-config-type{
+    width:150px;
+}
+.lottery-config-number{
+    width:35px;
+}
+.lottery-config-unit{
+    width:30px;
+}
+.clickable:hover{
+    opacity: .85;
 }

@@ -9,16 +9,16 @@ const animate = require('./animate.js')
 
 const players = require('./players.js')
 const winners = require('./winners.js')
+const config = require('./config.js')
 const win = remote.getCurrentWindow()
 
 const {
+    readConfigStorage,
     readWinnerStorage,
     writeWinnerFile,
     analyzeRecord,
     sumWinners,
     getPlayer,
-    getNextTurn,
-    getCurrentTurn,
     getWinnerList,
     getRandomWinner,
     getRandomPlayers,
@@ -49,7 +49,8 @@ window.page = new Vue({
     el: '#app',
     data: {
         isFullScreen: false,
-        info: require('../config.json'),
+        // info: require('../config.json'),
+        info: readConfigStorage(),
         currentAward: null,
         currentRecord: null,
         turn: undefined,
@@ -67,14 +68,15 @@ window.page = new Vue({
             return sumWinners(this.winnerRecord)
         },
         config() {
-            return analyzeRecord(this.info.config, this.winnerRecord)
+            return analyzeRecord(this.info, this.winnerRecord)
         },
         winnerList() {
             return getWinnerList(this.turn, this.idx, this.winnerRecord)
         }
     },
     created() {
-        this.winnerRecord = readWinnerStorage(this.info.key)
+        
+        this.winnerRecord = readWinnerStorage()
         readPlayersFile(playerFilePath).then((data) => {
             this.players = (data ? data.split(/\s+/) : []).filter((e) => {
                 return e != ''
@@ -83,8 +85,8 @@ window.page = new Vue({
             this.players = []
         })
         this.$watch('winnerRecord', function(val, oldVal) {
-            writeWinnerStorage(this.info.key, val)
-            writeWinnerFile(path.resolve(__dirname + '/../winner_' + this.info.key + '.csv'), val, oldVal)
+            writeWinnerStorage(val)
+            writeWinnerFile(path.resolve(__dirname + '/../winner.csv'), val, oldVal)
         }, {
             deep: true
         })
@@ -105,14 +107,6 @@ window.page = new Vue({
     },
     mounted() {
         animate.init()
-    },
-    watch: {
-        // winnerRecord: {
-        //     handler: function(val, oldVal) {
-        //         writeWinnerStorage(this.key, val)
-        //     },
-        //     deep: true
-        // }
     },
     methods: {
         close() {
@@ -148,7 +142,7 @@ window.page = new Vue({
         open(turn, idx) {
             this.turn = turn
             this.idx = idx
-            this.info.config[turn].list[idx].open = 1
+            this.info[turn].list[idx].open = 1
             this.currentAward = this.config[turn].list[idx]
         },
         start() {
@@ -179,6 +173,10 @@ window.page = new Vue({
         },
         importPlayers() {
             ipcRenderer.send('importPlayers')
+        },
+        clearWinners() {
+            this.winnerRecord = []
+            this.currentAward = null
         }
     },
     filters: {
@@ -191,6 +189,7 @@ window.page = new Vue({
     },
     components: {
         players,
-        winners
+        winners,
+        config
     }
 })

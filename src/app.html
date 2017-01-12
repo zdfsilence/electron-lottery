@@ -64,7 +64,7 @@
         <header class="head">
             <p class="icon-close clickable" @click="close"></p>
             <p class="icon-full clickable" @click="full"></p>
-            <p class="icon-setting" @click="setting"></p>
+            <p class="icon-setting clickable" @click="setting"></p>
         </header>
 
 
@@ -73,12 +73,72 @@
             <!-- <div class="lottery-config">
 
             </div> -->
-            <players :list="players" v-on:import-players="importPlayers"></players>
-            <winners :list="winnerRecord" v-on:import-players="importPlayers"></winners>
+            <config :info="info"></config>
+            <players :list="players" @import-players="importPlayers"></players>
+            <winners :list="winnerRecord" @clear-winners="clearWinners"></winners>
         </div>
     </div>
+    <script type="x-template" id="configTpl">
+        <div class="lottery-players">
+            <h2>抽奖配置</h2>
+            <table class="lottery-players-table">
+                <thead>
+                    <tr>
+                        <th @change="selectAll">
+                            <input type="checkbox" v-model="selectedAll" />
+                        </th>
+                        <th>顺序</th>
+                        <th>奖品名称</th>
+                        <th>奖品类型</th>
+                        <th>数量</th>
+                        <th>单位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-if="list[turn].list.length>0">
+                        <tr v-for="(item,index) in list[turn].list">
+                            <td @change="select">
+                                <input type="checkbox" v-model="selected[index]"/>
+                            </td>
+                            <td>
+                                <input class="lottery-config-idx" type="number" v-model="item.idx" />
+                            </td>
+                            <td>
+                                <input class="lottery-config-name" type="text" v-model="item.name" />
+                            </td>
+                            <td>
+                                <select v-model="item.type" @change="change(item)">
+                                    <option>奖 品</option>
+                                    <option>神秘大奖</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="lottery-config-number" type="number" v-model="item.number" />
+                            </td>
+                            <td>
+                                <input class="lottery-config-unit" type="text" v-model="item.unit" />
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td></td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <button class="lottery-setting-btn" @click="add">添加奖品</button>
+            <button class="lottery-setting-btn" @click="del">删除奖品</button>
+        </div>
+    </script>
     <script type="x-template" id="playersTpl">
         <div class="lottery-players">
+            <h2>参与名单</h2>
             <table class="lottery-players-table">
                 <thead>
                     <tr>
@@ -103,6 +163,7 @@
     </script>
     <script type="x-template" id="winnersTpl">
         <div class="lottery-players">
+            <h2>中奖结果</h2>
             <table class="lottery-players-table">
                 <thead>
                     <tr>
@@ -128,7 +189,8 @@
                     </template>
                 </tbody>
             </table>
-            <button class="lottery-setting-btn" @click="exportWinners">导出名单</button>
+            <button class="lottery-setting-btn" @click="exportWinners">导出中奖结果</button>
+            <button class="lottery-setting-btn" @click="clearWinners">清空中奖结果</button>
         </div>
     </script>
     <script src="app.js"></script>

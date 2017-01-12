@@ -1,11 +1,19 @@
 const fs = require('fs')
 const iconv = require('iconv-lite')
-exports.readWinnerStorage = function(key) {
-    let storage = localStorage.getItem('key_' + key)
+
+exports.readConfigStorage = function() {
+    let storage = localStorage.getItem('CONFIG')
+    return !storage ? [{name:'',list:[]}] : JSON.parse(storage)
+}
+exports.writeConfigStorage = function(data) {
+    localStorage.setItem('CONFIG', JSON.stringify(data))
+}
+exports.readWinnerStorage = function() {
+    let storage = localStorage.getItem('WINNERS')
     return !storage ? [] : JSON.parse(storage)
 }
-exports.writeWinnerStorage = function(key, data) {
-    localStorage.setItem('key_' + key, JSON.stringify(data))
+exports.writeWinnerStorage = function(data) {
+    localStorage.setItem('WINNERS', JSON.stringify(data))
 }
 exports.readPlayersFile = function(filePath) {
     return new Promise(function(resolve, reject) {
@@ -60,7 +68,7 @@ exports.writeWinnerFile = function(filePath, data) {
         }
     })
 }
-exports.savePlayersFile = function(filePath, data){
+exports.savePlayersFile = function(filePath, data) {
     fs.writeFile(filePath, data, {
         flag: 'w'
     }, function(err) {
@@ -86,7 +94,10 @@ exports.analyzeRecord = function(config, record) {
                 idx.winner = rec.map((e) => {
                     return e.winner
                 })
-
+            } else {
+                delete idx.open
+                idx.winner = []
+                idx = JSON.parse(JSON.stringify(idx))
             }
             return idx
         })
@@ -167,7 +178,7 @@ exports.getRandomWinner = function(number, blackList) {
     }
     return num
 }
-exports.getRandomPlayers = function(players, blackList){
+exports.getRandomPlayers = function(players, blackList) {
     let num
     while (num === undefined) {
         num = players[Math.floor(Math.random() * players.length)]

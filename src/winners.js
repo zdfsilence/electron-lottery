@@ -10,13 +10,17 @@ module.exports = {
     props:['list'],
     created(){
         ipcRenderer.on('exportWinners', (ev, res) => {
-            console.dir(res);
-            writeWinnerFile(res, this.list)
+            if(res){
+                writeWinnerFile(res, this.list)
+            }
         })
     },
     methods:{
         exportWinners(){
             ipcRenderer.send('exportWinners')
+        },
+        clearWinners(){
+            this.$emit('clear-winners')
         }
     }
 
