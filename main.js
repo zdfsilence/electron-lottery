@@ -1,9 +1,4 @@
-const {
-    app,
-    ipcMain,
-    BrowserWindow,
-    dialog
-} = require('electron')
+const {app, ipcMain, BrowserWindow} = require('electron')
 
 const path = require('path')
 const url = require('url')
@@ -36,31 +31,6 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
-    })
-    ipcMain.on('importPlayers', (event) => {
-        dialog.showOpenDialog({
-            properties: [
-                'openFile',
-            ],
-            filters: [{
-                name: '*',
-                extensions: ['txt']
-            }]
-        }, function(res) {
-            console.dir(res)
-            event.sender.send('importPlayers', res)
-        })
-    })
-
-    ipcMain.on('exportWinners', (event) => {
-        dialog.showSaveDialog({
-            filters: [{
-                name: '*',
-                extensions: ['csv']
-            }]
-        }, function(res) {
-            event.sender.send('exportWinners', res)
-        })
     })
 }
 

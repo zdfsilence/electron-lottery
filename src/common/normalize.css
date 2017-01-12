@@ -468,13 +468,3 @@ li {
     padding:0;
     list-style-type: none;
 }
-
-
-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
-td, th {
-    padding: 0;
-}

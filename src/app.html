@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>现场抽奖</title>
+    <title>旅游春晚</title>
     <link rel="stylesheet" href="./common/normalize.css" charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -53,10 +53,10 @@
             </div>
             <div class="winner">
                 <p class="award-name" v-if="!!currentAward">{{currentAward.name + currentAward.number + currentAward.unit}}</p>
-                <!-- <img class="award-img" v-if="!!currentAward" :src="'./奖品/'+currentAward.name+'.jpg'" />
-                <p class="award-name award-title" v-if="!!currentAward">中奖号码</p> -->
+                <img class="award-img" v-if="!!currentAward" :src="'./奖品/'+currentAward.name+'.jpg'" />
+                <p class="award-name award-title" v-if="!!currentAward">中奖号码</p>
                 <ul class="winner-list" v-if="!!winnerList">
-                    <li v-for="item in winnerList">{{item.winner | encodeMobile}}</li>
+                    <li v-for="item in winnerList">{{item.winner | preFix}}</li>
                 </ul>
             </div>
             <img class="bottom" src="./img/bottom.png" />
@@ -64,73 +64,8 @@
         <header class="head">
             <p class="icon-close clickable" @click="close"></p>
             <p class="icon-full clickable" @click="full"></p>
-            <p class="icon-setting" @click="setting"></p>
         </header>
-
-
-        <div class="lottery-setting" v-if="isSetting">
-            <p class="icon-close clickable" @click="isSetting=isSetting?false:true"></p>
-            <!-- <div class="lottery-config">
-
-            </div> -->
-            <players :list="players" v-on:import-players="importPlayers"></players>
-            <winners :list="winnerRecord" v-on:import-players="importPlayers"></winners>
-        </div>
     </div>
-    <script type="x-template" id="playersTpl">
-        <div class="lottery-players">
-            <table class="lottery-players-table">
-                <thead>
-                    <tr>
-                        <th>参与抽奖名单</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template v-if="list.length>0">
-                        <tr v-for="item in list">
-                            <td>{{item}}</td>
-                        </tr>
-                    </template>
-                    <template v-else>
-                        <tr>
-                            <td>无</td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-            <button class="lottery-setting-btn" @click="importPlayers">导入名单</button>
-        </div>
-    </script>
-    <script type="x-template" id="winnersTpl">
-        <div class="lottery-players">
-            <table class="lottery-players-table">
-                <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>中奖号码</th>
-                        <th>奖品名称</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template v-if="list.length>0">
-                        <tr v-for="(item,index) in list">
-                            <td>{{index+1}}</td>
-                            <td>{{item.winner}}</td>
-                            <td>{{item.award}}</td>
-                        </tr>
-                    </template>
-                    <template v-else>
-                        <tr>
-                            <td>无</td>
-                            <td>无</td>
-                            <td>无</td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-            <button class="lottery-setting-btn" @click="exportWinners">导出名单</button>
-        </div>
-    </script>
     <script src="app.js"></script>
 </body>
 
