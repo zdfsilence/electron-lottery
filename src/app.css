@@ -1,14 +1,12 @@
-/*html {
+html {
     cursor: url('data:image/x-icon;base64,AAACAAEAICACAAAAAAAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////////////////////////////////////////////////////////////////////////////////////////////////////////////j////wf///8H////B////wf///+P/////////////////////////////8='), auto;
-}*/
-
+}
 body {
     overflow-x: auto;
     overflow-y: auto;
     -webkit-user-select: none;
     /*-webkit-app-region: drag;*/
 }
-
 /*body::-webkit-scrollbar {
     width: 16px;
     height: 16px;
@@ -24,12 +22,11 @@ body::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
     background-color: #555;
 }*/
-
 .main {
     position: relative;
     width: 3040px;
     height: 976px;
-    background: #eee url(./img/bg_tv.jpg) no-repeat;
+    background: #eee url(./img/bg.png) no-repeat;
     background-size: contain;
     background-position: center;
     text-align: center;
@@ -52,7 +49,7 @@ body::-webkit-scrollbar-thumb {
     background: url(./img/machine.png) no-repeat;
     background-size: contain;
     background-position: center;
-    z-index: 2
+    z-index:2
 }
 .machine-start, .machine-end {
     position: absolute;
@@ -67,11 +64,11 @@ body::-webkit-scrollbar-thumb {
 .machine-end {
     left: 381px;
 }
-.machine-ani {
-    position: absolute;
-    left: 110px;
-    top: 80px;
-    z-index: 1
+.machine-ani{
+    position:absolute;
+    left:110px;
+    top:80px;
+    z-index:1
 }
 .awards {
     position: absolute;
@@ -125,8 +122,8 @@ body::-webkit-scrollbar-thumb {
 }
 .award-name {
     font-size: 24px;
-    height: 36px;
-    line-height: 36px;
+    height: 46px;
+    line-height: 46px;
     color: #ffd177;
 }
 .award-title {
@@ -153,15 +150,15 @@ body::-webkit-scrollbar-thumb {
     margin: 0 5px 2px;
 }
 .winner-list {
-    padding: 6px 5px 0;
+    padding: 8px 5px 0;
     text-align: justify;
 }
 .winner-list li {
     display: inline-block;
-    font-size: 31px;
+    font-size: 34px;
     color: #3a0204;
-    width: 100%;
-    height: 37px;
+    width: 49%;
+    height: 38px;
     text-align: center;
 }
 .bottom {
@@ -169,8 +166,8 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
     left: 0;
     bottom: 0;
-    pointer-events: none;
-    z-index: 3;
+    pointer-events:none;
+    z-index:3;
 }
 .clickable.clickable {
     /*-webkit-app-region: no-drag;*/
@@ -223,93 +220,4 @@ body::-webkit-scrollbar-thumb {
     border: 3px solid #fff;
     top: 23px;
     left: 17px;
-}
-.icon-setting:before {
-    content: '';
-    position: absolute;
-    height: 5px;
-    width: 22px;
-    top: 23px;
-    left: 13px;
-    background: #fff;
-    box-shadow: 0 8px 0 #fff, 0 16px 0 #fff;
-}
-.lottery-setting {
-    display: flex;
-    position: fixed;
-    width: 1200px;
-    height: 700px;
-    left: 50%;
-    top: 50%;
-    margin: -350px 0 0 -600px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-color: #61332c;
-    z-index: 5
-}
-.lottery-setting > div {
-    height: 600px;
-    /*overflow: auto;*/
-    /*border:1px solid #666;*/
-    /*border-radius: 20px;*/
-    padding: 10px;
-}
-.lottery-players {
-    text-align: center;
-}
-.lottery-players-table {
-    display: block;
-    max-height: 550px;
-    overflow: auto;
-    background: #fff;
-}
-.lottery-players-table tr {
-    border-top: 1px solid #999;
-    border-left: 1px solid #999;
-}
-.lottery-players-table td, .lottery-players-table th {
-    border-right: 1px solid #999;
-    border-bottom: 1px solid #999;
-    padding: 5px;
-}
-.lottery-setting-btn {
-    font-family: "\5FAE\8F6F\96C5\9ED1";
-    display: inline-block;
-    margin:10px 0 0 ;
-    font-weight: normal;
-    text-align: center;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 5px 5px;
-    font-size: 14px;
-    line-height: 1.42857;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: #eee;
-    color: #343434;
-    opacity: 0.85;
-    outline: none;
-    -webkit-transition: all 0.3s ease-out 0s;
-    transition: all 0.3s ease-out 0s;
-    border-radius: 2px;
-}
-.lottery-setting-btn:hover {
-    color: #464646;
-    text-decoration: none;
-    opacity: 1;
-}
-.lottery-setting .icon-close{
-    position: absolute;;
-    width: 60px;
-    height: 60px;
-    right:0;
-    top:0;
 }
