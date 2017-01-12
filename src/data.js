@@ -7,24 +7,49 @@ exports.readWinnerStorage = function(key) {
 exports.writeWinnerStorage = function(key, data) {
     localStorage.setItem('key_' + key, JSON.stringify(data))
 }
+exports.readPlayersFile = function(filePath) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(filePath, 'utf-8', (err, data) => {
+            console.dir(data);
+            if (err) {
+                if (err.code === "ENOENT") {
+                    fs.writeFile(filePath, '', {
+                        flag: 'w'
+                    }, function(err) {
+                        if (err) {
+                            console.log('创建players文件失败')
+                        } else {
+                            console.log('保存players文件成功')
+                        }
+                    })
+                } else {
+                    throw err
+                }
+                reject()
+            } else {
+                resolve(data.toString())
+            }
+
+        })
+    })
+}
+exports.importPlayersFile = function(filePath) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(filePath, 'utf-8', (err, data) => {
+            if (err) {
+                reject()
+            } else {
+                resolve(data.toString())
+            }
+        })
+    })
+}
 exports.writeWinnerFile = function(filePath, data) {
-    //let addData = data.slice(odata.length)
-    // fs.writeFile(filePath, '', {
-    //     flag: 'w',
-    //     encoding: 'utf8'
-    // }, function(err) {
-    //     if (err) {
-    //         console.log('清空失败')
-    //     } else {
-    //         console.log('清空成功')
-    //     }
-    // })
-    let csv = data.reduce((r, e, i)=>{
-        r.push((i+1)+','+(e.turn+1)+','+(e.idx+1)+','+e.award+','+e.winner+','+e.time)
+    let csv = data.reduce((r, e, i) => {
+        r.push((i + 1) + ',' + (e.turn + 1) + ',' + (e.idx + 1) + ',' + e.award + ',' + e.winner + ',' + e.time)
         return r
     }, ['序号,轮次,顺序,奖品,中奖号码,抽奖时间']).join('\r')
-    csv = iconv.encode(csv,'gbk')
-    // fs.writeFile(filePath, JSON.stringify(data).replace(/\}\,\{/g, '},\r{'), {
+    csv = iconv.encode(csv, 'gbk')
     fs.writeFile(filePath, csv, {
         flag: 'w'
     }, function(err) {
@@ -34,24 +59,17 @@ exports.writeWinnerFile = function(filePath, data) {
             console.log('保存成功')
         }
     })
-    // fs.exists(filePath, function(isExist) {
-    //     if (!isExist) {
-    //         fs.writeFile(filePath, JSON.stringify(data), {
-    //             flag: 'a',
-    //             encoding: 'utf8'
-    //         }, function(err) {
-    //             if (err) {
-    //                 alert(err)
-    //             } else {
-    //                 console.log('中奖名单创建成功')
-    //             }
-    //         })
-    //     } else {
-    //         fs.writeFile(filePath, '\r\n使用fs.appendFile追加文件内容', function() {
-    //             console.log('追加内容完成');
-    //         })
-    //     }
-    // })
+}
+exports.savePlayersFile = function(filePath, data){
+    fs.writeFile(filePath, data, {
+        flag: 'w'
+    }, function(err) {
+        if (err) {
+            console.log('保存失败')
+        } else {
+            console.log('保存成功')
+        }
+    })
 }
 exports.analyzeRecord = function(config, record) {
     return config.map((turn, i) => {
@@ -145,6 +163,14 @@ exports.getRandomWinner = function(number, blackList) {
     let num
     while (num === undefined) {
         num = parseInt(Math.random() * number) + 1
+        if (blackList.indexOf(num) > -1) num = undefined
+    }
+    return num
+}
+exports.getRandomPlayers = function(players, blackList){
+    let num
+    while (num === undefined) {
+        num = players[Math.floor(Math.random() * players.length)]
         if (blackList.indexOf(num) > -1) num = undefined
     }
     return num
