@@ -2,9 +2,10 @@
   "name": "electron-lottery",
   "version": "1.0.0",
   "description": "A Electron application",
-  "main": "./main.js",
+  "main": "./app/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "packager": "electron-packager . 抽奖 --platform=win32 --arch=x64 --version=1.4.14 --icon=app/icon.ico --overwrite --out=./out"
   },
   "repository": "https://github.com/zdfsilence/electron-lottery.git",
   "keywords": [
@@ -12,7 +13,10 @@
   ],
   "author": "zdfsilence@gmail.com",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "1.4.13",
+    "electron-packager": "^8.5.0"
+  },
   "dependencies": {
     "electron-storage": "^1.0.7",
     "iconv-lite": "^0.4.15"

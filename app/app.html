@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>现场抽奖</title>
+    <link rel="stylesheet" href="./common/normalize.css" charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link rel="stylesheet" href="./app.css" charset="utf-8">
+</head>
+
+<body>
+    <div id="app">
+        <div class="main" ref="lottery">
+            <dl class="awards">
+                <template v-for="(item1, index1) in config">
+                    <dt>{{item1.name}}</dt>
+                    <template v-for="(item2, index2) in item1.list">
+                        <template v-if="item2.winner && item2.winner.length>=item2.number">
+                            <dd class="finish" :class="{'big':item2.level!=1}" @click="open(index1, index2)">
+                                {{item2.name}}
+                            </dd>
+                        </template>
+                        <template v-else>
+                            <template v-if="item2.winner && item2.winner.length>0 || item2.open==1">
+                                <dd :class="{'big':item2.level!=1}" @click="open(index1, index2)">
+                                    {{item2.name}}
+                                </dd>
+                            </template>
+                            <template v-else>
+                                <dd :class="{'big':item2.level!=1}" @click="open(index1, index2)">
+                                    <i></i>{{item2.type}}<i></i>
+                                </dd>
+                            </template>
+                        </template>
+
+                    </template>
+                </template>
+            </dl>
+            <div class="machine">
+                <img hidden src="./img/1.png" id="img1">
+                <img hidden src="./img/2.png" id="img2">
+                <img hidden src="./img/3.png" id="img3">
+                <img hidden src="./img/4.png" id="img4">
+                <img hidden src="./img/5.png" id="img5">
+                <canvas class="machine-ani" id="cvs" width="500" height="280"></canvas>
+                <div class="machine-front"></div>
+                <div class="machine-start" @click="start"></div>
+                <div class="machine-end" @click="end"></div>
+            </div>
+            <div class="winner">
+                <p class="award-name" v-if="!!currentAward">{{currentAward.name + currentAward.number + currentAward.unit}}</p>
+                <!-- <img class="award-img" v-if="!!currentAward" :src="'./奖品/'+currentAward.name+'.jpg'" />
+                <p class="award-name award-title" v-if="!!currentAward">中奖号码</p> -->
+                <ul class="winner-list" v-if="!!winnerList">
+                    <li v-for="item in winnerList">{{item.winner | encodeMobile}}</li>
+                </ul>
+            </div>
+            <img class="bottom" src="./img/bottom.png" />
+        </div>
+        <header class="head">
+            <p class="icon-close clickable" @click="close"></p>
+            <p class="icon-full clickable" @click="full"></p>
+            <p class="icon-setting clickable" @click="setting"></p>
+        </header>
+
+
+        <div class="lottery-setting" v-if="isSetting">
+            <p class="icon-close clickable" @click="isSetting=isSetting?false:true"></p>
+            <!-- <div class="lottery-config">
+
+            </div> -->
+            <config :info="info"></config>
+            <players :list="players" @import-players="importPlayers"></players>
+            <winners :list="winnerRecord" @clear-winners="clearWinners"></winners>
+        </div>
+    </div>
+    <script type="x-template" id="configTpl">
+        <div class="lottery-players">
+            <h2>抽奖配置</h2>
+            <table class="lottery-players-table">
+                <thead>
+                    <tr>
+                        <th @change="selectAll">
+                            <input type="checkbox" v-model="selectedAll" />
+                        </th>
+                        <th>顺序</th>
+                        <th>奖品名称</th>
+                        <th>奖品类型</th>
+                        <th>数量</th>
+                        <th>单位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-if="list[turn].list.length>0">
+                        <tr v-for="(item,index) in list[turn].list">
+                            <td @change="select">
+                                <input type="checkbox" v-model="selected[index]"/>
+                            </td>
+                            <td>
+                                <input class="lottery-config-idx" type="number" v-model="item.idx" />
+                            </td>
+                            <td>
+                                <input class="lottery-config-name" type="text" v-model="item.name" />
+                            </td>
+                            <td>
+                                <select v-model="item.type" @change="change(item)">
+                                    <option>奖 品</option>
+                                    <option>神秘大奖</option>
+                                    <option>一等奖</option>
+                                    <option>二等奖</option>
+                                    <option>三等奖</option>
+                                    <option>四等奖</option>
+                                    <option>五等奖</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="lottery-config-number" type="number" v-model="item.number" />
+                            </td>
+                            <td>
+                                <input class="lottery-config-unit" type="text" v-model="item.unit" />
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td></td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <button class="lottery-setting-btn" @click="add">添加奖品</button>
+            <button class="lottery-setting-btn" @click="del">删除奖品</button>
+        </div>
+    </script>
+    <script type="x-template" id="playersTpl">
+        <div class="lottery-players">
+            <h2>参与名单</h2>
+            <table class="lottery-players-table">
+                <thead>
+                    <tr>
+                        <th>参与抽奖名单</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-if="list.length>0">
+                        <tr v-for="item in list">
+                            <td>{{item}}</td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td>无</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <button class="lottery-setting-btn" @click="importPlayers">导入名单</button>
+        </div>
+    </script>
+    <script type="x-template" id="winnersTpl">
+        <div class="lottery-players">
+            <h2>中奖结果</h2>
+            <table class="lottery-players-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>中奖号码</th>
+                        <th>奖品名称</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-if="list.length>0">
+                        <tr v-for="(item,index) in list">
+                            <td>{{index+1}}</td>
+                            <td>{{item.winner}}</td>
+                            <td>{{item.award}}</td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td>无</td>
+                            <td>无</td>
+                            <td>无</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <button class="lottery-setting-btn" @click="exportWinners">导出中奖结果</button>
+            <button class="lottery-setting-btn" @click="clearWinners">清空中奖结果</button>
+        </div>
+    </script>
+    <script src="app.js"></script>
+</body>
+
+
+
+</html>
