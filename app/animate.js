@@ -106,13 +106,13 @@ module.exports = {
 
         for (var k = 0; k < pos.length; k++) {
             if (k % 2 == 0) {
-                for (let i1 = 0; i1 < 3; i1++) {
+                for (let i1 = 0; i1 < 2; i1++) {
                     for (let j1 = 0; j1 < 10; j1++) {
                         pos[k].push([25 + j1 * 50 + ((Math.random() - 0.5) * 25), 255 - i1 * 50 + ((Math.random() - 0.5) * 25)])
                     }
                 }
             } else {
-                for (let i2 = 0; i2 < 3; i2++) {
+                for (let i2 = 0; i2 < 2; i2++) {
                     for (let j2 = 0; j2 < 9; j2++) {
                         pos[k].push([50 + j2 * 50 + ((Math.random() - 0.5) * 25), 230 - i2 * 50 + ((Math.random() - 0.5) * 25)])
                     }
