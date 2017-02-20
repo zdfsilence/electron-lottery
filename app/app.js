@@ -75,7 +75,7 @@ window.page = new Vue({
         }
     },
     created() {
-        
+
         this.winnerRecord = readWinnerStorage()
         readPlayersFile(playerFilePath).then((data) => {
             this.players = (data ? data.split(/\s+/) : []).filter((e) => {
