@@ -1,1 +1,1 @@
-# electron-lottery
+# 使用electron vue开发的抽奖程序，可用于年会抽奖，剧场大屏幕抽奖
